@@ -1,6 +1,7 @@
 const Product = require('../model/product.model')
 const ErrorHandler = require('../utils/errorHandler')
 const catchAsyncErrors = require('../middelware/catchAsyncErrors');
+const ApiFeature = require('../utils/apiFeatures');
 
 // create product
 exports.createProduct= catchAsyncErrors ( async (req,res,next)=>{
@@ -13,7 +14,9 @@ exports.createProduct= catchAsyncErrors ( async (req,res,next)=>{
 
 // get all products
 exports.getAllProducts=catchAsyncErrors( async(req,res)=>{
-    const productData = await Product.find();
+    const resultPerPage = 5;
+    const apifeatures = new ApiFeature(Product.find(),req.query).search().filter().pagination(resultPerPage)
+    const productData = await apifeatures.query;
     if(productData){
         res.status(200).send({status:true,data:productData,message:"all product get successfully"});
     }
