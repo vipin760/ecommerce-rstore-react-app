@@ -6,8 +6,13 @@ const {
   forgotPassword,
   resetpassword,
   getUserDetails,
+  updatePassword,
+  updateProfile,
+  getAllUser,
+  getSingleUser,
+  deleteUser,
 } = require("../controller/user.controller");
-const { userAuthentication } = require("../middelware/auth");
+const { userAuthentication, authorizeRoles } = require("../middelware/auth");
 const router = express();
 
 router.route("/register").post(registerUser);
@@ -20,6 +25,14 @@ router.route("/forgot-password").post(forgotPassword);
 
 router.route("/reset-password/:token").put(resetpassword);
 
-router.route('/profile').get(userAuthentication,getUserDetails)
+router.route('/profile').get(userAuthentication,getUserDetails);
+
+router.route('/update-password').post(userAuthentication,updatePassword);
+
+router.route('/update-profile').post(userAuthentication,updateProfile);
+
+router.route('/fetch').get(userAuthentication,authorizeRoles('admin'),getAllUser);
+
+router.route('/fetch/:id').get(userAuthentication,authorizeRoles('admin'),getSingleUser).delete(userAuthentication,authorizeRoles("admin"),deleteUser);
 
 module.exports = router;

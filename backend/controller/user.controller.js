@@ -125,10 +125,82 @@ exports.resetpassword = catchAsyncErrors ( async (req,res,next)=>{
 ////////////////get user detailes//////////////////////////////////////////////////////////////////
 
 exports.getUserDetails = catchAsyncErrors(async (req,res,next)=>{
-    const user = await User.find(req.user.id);
+    const user = await User.findById(req.user.id);
     res.status(200).send({status:true,data:user,message:"user data fetch successfully"});
 })
 
+///////////////////update user/////////////////////////////////////////////////////////////////////////////////
+exports.updatePassword = catchAsyncErrors(async (req,res,next)=>{
+    const user = await User.findById(req.user.id).select("+password");
+
+    const isPasswordTrue =await bcrypt.compare(req.body.oldPassword,user.password);
+    if(!isPasswordTrue){
+        return next(new ErrorHandler("old password is incorrect",400));
+    }
+
+    if(req.body.newPassword !== req.body.confirmPassword){
+        return next(new ErrorHandler(`newpassword and confirmpassword doesn't match`,400));
+    }
+    const passwordHash = await bcrypt.hash(req.body.newPassword,10);
+    user.password = passwordHash
+
+    await user.save().then((data)=>{
+        console.log("data",data)
+        const token = generateToken(data);
+        sendToken(data,token,200,res);
+    })
+
+})
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+exports.updateProfile = catchAsyncErrors ( async (req,res,next)=>{
+    const newUser ={
+        name:req.body.name
+    }
+    const user = await User.findByIdAndUpdate(req.user.id,newUser,{
+        new:true,
+        runValidators:true,
+        useFindAndModify:false
+    });
+
+    res.status(200).send({status:true,user, data:'',message:"profile updated successfully"})
+})
+
+//////////////////////get all users//////////////////////////////////////////////////////////////////////////////
+
+exports.getAllUser = catchAsyncErrors ( async (req,res,next)=>{
+    const users = await User.find()
+    res.status(200).send({status:true, data:users,message:"all users are listed"});
+})
+
+//////////////////////get single users//////////////////////////////////////////////////////////////////////////////
+
+exports.getSingleUser = catchAsyncErrors ( async (req,res,next)=>{
+    const user = await User.findById(req.params.id)
+    if(!user){
+        return next(new ErrorHandler("user data not found",400))
+    }
+    res.status(200).send({status:true, data:user,message:"all users are listed"});
+})
+
+//////////////////////delete sigle user//////////////////////////////////////////////////////////////////////////////
+
+exports.deleteUser = catchAsyncErrors (async(req,res,next)=>{
+    const user = await User.findById(req.params.id)
+    if(!user){
+        return next(new ErrorHandler("user not found our collection",400))
+    }
+    // const userDelete = await User.deleteOne({_id:req.params.id})
+    // if(userDelete.deletedCoun===1){
+    //     res.status(201).send({status:true,data:'',message:"deleted successfully"})
+    // }
+    await User.deleteOne({_id:req.params.id}).then((data)=>{
+        console.log(data)
+        if(data.deletedCount===1){
+            res.status(200).send({status:true,data:'',message:"deleted user"});
+        }
+    })
+    
+})
+///Review section
+/////////create new Review///////////////////////////////////////////////////////////////////////////////////////////
