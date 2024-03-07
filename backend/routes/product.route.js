@@ -1,13 +1,27 @@
-const express = require('express');
-const { getAllProducts,createProduct, updateProduct, deleteProduct, getSingleProduct } = require('../controller/product.controller');
+const express = require("express");
+const {
+  getAllProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+  getSingleProduct,
+} = require("../controller/product.controller");
+const { userAuthentication, authorizeRoles } = require("../middelware/auth");
 
-const router = express()
+const router = express();
 
-router.route('/create-product').post(createProduct);
+router
+  .route("/")
+  .post(userAuthentication, authorizeRoles("admin"), createProduct);
 
-router.route('/product').get(getAllProducts);
+router
+  .route("/")
+  .get(userAuthentication, authorizeRoles("admin"), getAllProducts);
 
-router.route('/product/:id').put(updateProduct).delete(deleteProduct).get(getSingleProduct);
+router
+  .route("/:id")
+  .put(userAuthentication, authorizeRoles("admin"), updateProduct)
+  .delete(userAuthentication, authorizeRoles("admin"), deleteProduct)
+  .get(getSingleProduct);
 
-
-module.exports = router
+module.exports = router;

@@ -5,10 +5,10 @@ const ApiFeature = require('../utils/apiFeatures');
 
 // create product
 exports.createProduct= catchAsyncErrors ( async (req,res,next)=>{
+    req.body.user = req.user.id
     const product = await Product.create(req.body)
        if(product){
-        console.log(product)
-        res.status(201).send({status:true, data:'',productCount:productCount, message:"product added successfully"})
+        res.status(201).send({status:true, data:'', message:"product added successfully"})
        } 
 })
 
@@ -17,11 +17,11 @@ exports.createProduct= catchAsyncErrors ( async (req,res,next)=>{
 // get all products
 exports.getAllProducts=catchAsyncErrors( async(req,res)=>{
     const resultPerPage = 5;
-    const productCount = await Product.coundDocuments()
+    const productCount = await Product.countDocuments()
     const apifeatures = new ApiFeature(Product.find(),req.query).search().filter().pagination(resultPerPage)
     const productData = await apifeatures.query;
     if(productData){
-        res.status(200).send({status:true,data:productData,message:"all product get successfully"});
+        res.status(200).send({status:true,data:productData,productCount:productCount,message:"all product get successfully"});
     }
 })
 // get single product
