@@ -29,7 +29,7 @@ exports.registerUser = catchAsyncErrors( async(req,res,next)=>{
         return next(new ErrorHandler("something went wrong please try agait after sometimes",400));
     }) 
 });
-////////////////login user////////////////////////////////////////////////////////////////////
+////////////////login user//////////////////////////////////////////////////////////////////////////
 
 exports.loginUser = catchAsyncErrors( async (req,res,next)=>{
     const {email, password} = req.body

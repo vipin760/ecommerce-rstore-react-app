@@ -12,6 +12,8 @@ exports.createProduct= catchAsyncErrors ( async (req,res,next)=>{
        } 
 })
 
+
+
 // get all products
 exports.getAllProducts=catchAsyncErrors( async(req,res)=>{
     const resultPerPage = 5;
