@@ -41,7 +41,6 @@ exports.updateProduct= catchAsyncErrors ( async(req,res,next)=>{
         new:true,runValidators:true,
         useFindAndModify:false
     })
-    console.log(product)
     res.status(201).send({status:true,data:product,message:"update successfully"})
 }
 )

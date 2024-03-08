@@ -27,7 +27,6 @@ exports.registerUser = catchAsyncErrors( async(req,res,next)=>{
         const token = generateToken(data)
        return res.status(201).send({status:true, data:token, message:"user registration completed"});
     }).catch(err=>{
-        console.log(err.message);
         return next(new ErrorHandler(err.message,400));
     }) 
 });
@@ -191,7 +190,6 @@ exports.deleteUser = catchAsyncErrors (async(req,res,next)=>{
     //     res.status(201).send({status:true,data:'',message:"deleted successfully"})
     // }
     await User.deleteOne({_id:req.params.id}).then((data)=>{
-        console.log(data)
         if(data.deletedCount===1){
             res.status(200).send({status:true,data:'',message:"deleted user"});
         }
