@@ -24,9 +24,8 @@ exports.registerUser = catchAsyncErrors( async(req,res,next)=>{
             url:"image.jpeg"
         }
     }).then(data=>{
-        console.log(data)
         const token = generateToken(data)
-       return res.status(201).send({status:true, data:'',token, message:"user registration completed"});
+       return res.status(201).send({status:true, data:token, message:"user registration completed"});
     }).catch(err=>{
         console.log(err.message);
         return next(new ErrorHandler(err.message,400));
@@ -84,7 +83,7 @@ exports.forgotPassword = catchAsyncErrors ( async (req,res,next)=>{
             subject:'R-store Recovery Email',
             message
         })
-        res.status(201).send({status:true,data:'',message:`Email Send you are providing ${user.email} email address successfully`})
+        res.status(201).send({status:true,data:'',message:`Email Send you are providing ${user.email} email address successfully`,message})
         
      } catch (error) {
         user.resetPasswordToken=undefined;
@@ -110,8 +109,6 @@ exports.resetpassword = catchAsyncErrors ( async (req,res,next)=>{
     }
     const passwordHash= await bcrypt.hash(req.body.password,10)
     user.password = passwordHash
-    user.resetPasswordToken=undefined;
-    user.resetPasswordExpire=undefined;
 
     await user.save().then(user=>{
     const token = generateToken(user)
@@ -145,7 +142,6 @@ exports.updatePassword = catchAsyncErrors(async (req,res,next)=>{
     user.password = passwordHash
 
     await user.save().then((data)=>{
-        console.log("data",data)
         const token = generateToken(data);
         sendToken(data,token,200,res);
     })
@@ -202,5 +198,4 @@ exports.deleteUser = catchAsyncErrors (async(req,res,next)=>{
     })
     
 })
-///Review section
-/////////create new Review///////////////////////////////////////////////////////////////////////////////////////////
+

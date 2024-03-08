@@ -8,7 +8,7 @@ const {
   getUserDetails,
   updatePassword,
   updateProfile,
-  getAllUser,
+  getAllUser, 
   getSingleUser,
   deleteUser,
 } = require("../controller/user.controller");
@@ -19,17 +19,17 @@ router.route("/register").post(registerUser);
 
 router.route("/login").post(loginUser);
 
+router.route('/update-profile').post(userAuthentication,updateProfile);
+
+router.route('/profile').get(userAuthentication,getUserDetails);
+
 router.route("/logout").get(logoutUser);
 
 router.route("/forgot-password").post(forgotPassword);
 
 router.route("/reset-password/:token").put(resetpassword);
 
-router.route('/profile').get(userAuthentication,getUserDetails);
-
 router.route('/update-password').post(userAuthentication,updatePassword);
-
-router.route('/update-profile').post(userAuthentication,updateProfile);
 
 router.route('/fetch').get(userAuthentication,authorizeRoles('admin'),getAllUser);
 

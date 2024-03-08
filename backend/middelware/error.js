@@ -28,7 +28,18 @@ module.exports = (err,req, res,next)=>{
         const message = 'Json web token is expired, please try again'
         err = new ErrorHandler(message,400)
     }
-    console.log(err)
+    if(err.message.includes('E11000 duplicate key error')){
+        let fieldName = 'unknown';
+        const fieldMatch = err.message.match(/index: (.+?)_1/);
+        if (fieldMatch) {
+            fieldName = fieldMatch[1];
+        }
+        const valueMatch = err.message.match(/\"(.+?)\"/);
+        const duplicateValue = valueMatch ? valueMatch[1] : 'unknown';
+        const message = `Already exist in these ${fieldName} '${duplicateValue}' in our collection`;
+        err = new ErrorHandler(message,400)
+
+    }
     res.status(err.statuscode).send({status:false,data:'',message:err.message});
 }
 

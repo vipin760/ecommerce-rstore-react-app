@@ -7,7 +7,7 @@ npm i jsonwebtoken validator nodemailer cookie-parser body-parser
 "price":18000,
 "description":"good product",
 "category":"Tablet",
-"images":{
+"images":{ 
     "public_id":"sample image",
     "url":"sample 1.jpeg"
 }
