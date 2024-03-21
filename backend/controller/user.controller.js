@@ -133,14 +133,20 @@ exports.updatePassword = catchAsyncErrors(async (req,res,next)=>{
     if(!isPasswordTrue){
         return next(new ErrorHandler("old password is incorrect",400));
     }
-
+    if(req.body.newPassword.length<8){
+        return next(new ErrorHandler("password charrecter atleast 8",400));
+    }
     if(req.body.newPassword !== req.body.confirmPassword){
         return next(new ErrorHandler(`newpassword and confirmpassword doesn't match`,400));
+    }
+    const oldPasswordTrue=await bcrypt.compare(req.body.newPassword,user.password);
+    if(oldPasswordTrue){
+        return next(new ErrorHandler(`old password cannot set again`))
     }
     const passwordHash = await bcrypt.hash(req.body.newPassword,10);
     user.password = passwordHash
 
-    await user.save().then((data)=>{
+    await user.save({runValidators: true}).then((data)=>{
         const token = generateToken(data);
         sendToken(data,token,200,res);
     })

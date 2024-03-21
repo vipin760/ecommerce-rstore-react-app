@@ -12,16 +12,15 @@ const {
 const { userAuthentication, authorizeRoles } = require("../middelware/auth");
 
 const router = express();
+router
+  .route("/")
+  .post(userAuthentication, authorizeRoles("admin"), createProduct);
 
 // create product review
 router.route("/review").put( userAuthentication,createProductRivew);
 
 // product review get and delete
 router.route('/reviews').get(getAllProductReviews).delete(userAuthentication,deleteProductReviews);
-
-router
-  .route("/")
-  .post(userAuthentication, authorizeRoles("admin"), createProduct);
 
 router
   .route("/")

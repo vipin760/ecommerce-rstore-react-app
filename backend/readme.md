@@ -52,7 +52,7 @@ shippingInfo,paymentInfo,itemsPrice,
 }
 
 
-/////////////////////
+////order/////////////////
 {
     "itemsPrice":18000,
     "taxPrice":36,

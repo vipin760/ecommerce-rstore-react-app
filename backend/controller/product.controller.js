@@ -106,14 +106,12 @@ exports.deleteProductReviews = catchAsyncErrors( async (req,res,next)=>{
     if(!product){
         return next(new ErrorHandler("product not found",404))
     }
-    const reviews = product.reviews.filter(rev=> rev._id.toString() !== req.query.reviewId.toString());
-
+    const reviews = product.reviews.filter(rev=> rev._id.toString() !== req.query.reviewId.toString() );
     // update rating
     let avg=0
     reviews.forEach((rev)=>{
         avg+=rev.rating
     })
-
     const rating = avg/reviews.length
     const numOfReviews = reviews.length
      await Product.findByIdAndUpdate(req.query.productId,{reviews,rating,numOfReviews},{new:true,runValidators:true,useFindAndModify:false}).then(data=>{

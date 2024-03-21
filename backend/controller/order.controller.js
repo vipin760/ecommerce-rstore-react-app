@@ -74,7 +74,7 @@ exports.updateOrders = catchAsyncErrors( async(req,res,next)=>{
     }
 
     await order.save({validateBeforeSave:false}).then((data)=>{
-        res.status(201).send({status:true,data:order,message:"orders fetch success"})
+        res.status(201).send({status:true,data:order,message:"orders Delivered success"})
     })
 
 })

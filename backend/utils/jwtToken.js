@@ -6,7 +6,7 @@ const sendToken = (user,token,statuscode,res)=>{
         ),
         httpOnly:true
     }
-    res.status(statuscode).cookie('token',token,options).send({status:true,data:token,message:"Login Success"})
+    res.status(statuscode).cookie('token',token,options).send({status:true,data:token,message:"Success"})
 }
 
 module.exports = sendToken;
