@@ -19,7 +19,6 @@ class ApiFeature{
     // filter api starts here
 
     filter(){
-        console.log("filter working")
         const queryCopy = { ...this.queryStr }
         const removeFields =["keyword","page","limit"];
         removeFields.forEach((key)=> delete queryCopy[key]);
@@ -34,7 +33,6 @@ class ApiFeature{
     // pagination starts here
     pagination(resultPerPage){
         const currentPage = Number(this.queryStr.page) || 1;
-
         const skip = resultPerPage * (currentPage - 1);
         this.query = this.query.limit(resultPerPage).skip(skip);
         return this

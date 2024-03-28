@@ -18,3 +18,5 @@ installation dependencies
  react-alert-template-basic 
  redux-dev-tools-extension
  
+ 5.44 product.ratings
+ Product.jsx

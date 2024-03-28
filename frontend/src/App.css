@@ -1,4 +1,21 @@
+:root{
+    --primary-color: #5344db;
+    --accent-color: #5344db;
+    --grey:#484848;
+    --bg-grey: #efefef;
+    --shadow: #949494;
+}
 *{
     margin: 0;
     scroll-behavior: smooth;
 }
+/* opera ,chrome,edge,safari */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* firefox  support*/
+input[type="number"]{
+    -moz-appearance: textfield;
+} 

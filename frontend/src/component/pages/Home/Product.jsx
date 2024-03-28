@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-regular-svg-icons';
+import FiveStarRating from "../../layout/startRating/Star-rating";
 
 const options = {
   edit: false,
@@ -11,15 +14,16 @@ const options = {
 };
 
 const Product = ({ product }) => {
+  const [rating, setRating] = useState(4.5)
   return (
-    <Link className="productCard" to={Product._id}>
+    <Link className="productCard" to={`/product/${product._id}`}>
       <img src={product.images[0].url} alt={product.name} />
       <p>{product.name}</p>
       <div>
-        
-        <span>(256 Reviews)</span>
+      <FiveStarRating count={product.rating}/> <span>Reviews({product.numOfReviews})</span>
+      
       </div>
-      <span>{product.price}</span>
+      <span>{`${product.price}`}</span>
     </Link>
   );
 };

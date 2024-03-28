@@ -5,6 +5,7 @@ import "./App.css";
 import WebFont from "webfontloader";
 import Footer from "./component/layout/Footer/Footer.jsx";
 import Home from "./component/pages/Home/Home.jsx"
+import ProductDetails from "./component/pages/ProductDetails/ProductDetails.jsx";
 
 function App() {
   React.useEffect =
@@ -21,6 +22,7 @@ function App() {
       <Header />
       <Routes>
       <Route exact path="/" element={<Home/>} />
+      <Route exact path="/product/:id" element={<ProductDetails/>} />
       </Routes>
       <Footer/>
     </Router>

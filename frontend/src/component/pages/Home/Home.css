@@ -43,9 +43,10 @@
     position: absolute;
     top: 0%;
     left: 0;
-    clip-path: polygon(100% 68%, 0 100%, 100% 100%);
     max-width: 100%;
+    clip-path: polygon(70% 90%, 0 100%, 100% 100%);
   }
+  /* clip-path: polygon(100% 68%, 0 100%, 100% 100%); */
   .homeHeading {
     text-align: center;
     font-family: Roboto;
